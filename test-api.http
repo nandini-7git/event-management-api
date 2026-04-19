@@ -1,0 +1,104 @@
+### ===========================
+### USER AUTHENTICATION
+### ===========================
+
+### Register User
+POST http://localhost:5050/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Vaishnavi Reddy",
+  "email": "vaishu@example.com",
+  "password": "123!"
+}
+
+### Login User
+POST http://localhost:5050/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "vaishu@example.com",
+  "password": "123!"
+}
+
+### ===========================
+### EVENT MANAGEMENT
+### ===========================
+
+### Create Event (Protected)
+POST http://localhost:5050/api/events
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzY0MjIyMzU2LCJleHAiOjE3NjQzMDg3NTZ9.ka0M39a6g0mmXVdA-m5FH-8Wtx5-11cgoL1w7CDMJvk
+Content-Type: application/json
+
+{
+  "title": "Music Concert",
+  "description": "Live music concert by famous band",
+  "date": "2025-12-10",
+  "location": "City Hall",
+  "capacity": 200
+}
+
+###  Get All Events (Public)
+GET http://localhost:5050/api/events
+
+###  Get Single Event (Public)
+GET http://localhost:5050/api/events/2
+
+###  Update Event (Protected)
+PUT http://localhost:5050/api/events/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzY0MjIyMzU2LCJleHAiOjE3NjQzMDg3NTZ9.ka0M39a6g0mmXVdA-m5FH-8Wtx5-11cgoL1w7CDMJvk
+Content-Type: application/json
+
+{
+  "title": "Updated Music Concert",
+  "capacity": 120
+}
+
+###  Delete Event (Protected)
+DELETE http://localhost:5050/api/events/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzY0MjIyMzU2LCJleHAiOjE3NjQzMDg3NTZ9.ka0M39a6g0mmXVdA-m5FH-8Wtx5-11cgoL1w7CDMJvk
+
+### ===========================
+### PAYMENT SIMULATION (Stripe / PayPal)
+### ===========================
+
+###  1) Create Payment Intent (Protected)
+POST http://localhost:5050/api/payment/create-intent
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzY0MjIyMzU2LCJleHAiOjE3NjQzMDg3NTZ9.ka0M39a6g0mmXVdA-m5FH-8Wtx5-11cgoL1w7CDMJvk
+Content-Type: application/json
+
+{
+  "eventId": 2,
+  "amount": 499
+}
+
+###  2) Confirm Payment + Book Ticket (Protected)
+POST http://localhost:5050/api/payment/confirm
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzY0MjIyMzU2LCJleHAiOjE3NjQzMDg3NTZ9.ka0M39a6g0mmXVdA-m5FH-8Wtx5-11cgoL1w7CDMJvk
+Content-Type: application/json
+
+{
+  "paymentId": "SIM_PAY_1764222467518",
+  "provider": "stripe",
+  "eventId": 3,
+  "type": "VIP"
+}
+
+### ===========================
+### TICKET BOOKING (Direct)
+### ===========================
+
+###  Book Ticket (Protected)
+POST http://localhost:5050/api/tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzY0MjIyMzU2LCJleHAiOjE3NjQzMDg3NTZ9.ka0M39a6g0mmXVdA-m5FH-8Wtx5-11cgoL1w7CDMJvk
+Content-Type: application/json
+
+{
+  "eventId": 3,
+  "type": "VIP",
+  "paymentId": "SIM_PAY_1764140261999"
+}
+
+###  Get My Tickets (Protected)
+GET http://localhost:5050/api/tickets/my-tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzY0MjIyMzU2LCJleHAiOjE3NjQzMDg3NTZ9.ka0M39a6g0mmXVdA-m5FH-8Wtx5-11cgoL1w7CDMJvk
